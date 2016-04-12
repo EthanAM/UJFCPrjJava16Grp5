@@ -7,4 +7,11 @@ vous aurriez fait mieux pour vous et l'utilisateur.
 
 * l'IHM aurrai mérité de pouvoir être redimensionnée.
 
-    
+* la commande `git shortlog -nes` donne le résultat suivant:
+```
+    19  TuturPremier <theo.delorme@etud.univ-jfc.fr>
+    2  tdelorme <tdelorme@MM316>
+    1  TuturPremier <theodelorme@MacBook-Air-de-Theo-2.local>
+    1  tdelorme <tdelorme@BB205>
+``` 
+  Je ne vois pas votre collègue Ethan...
