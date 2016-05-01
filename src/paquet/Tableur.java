@@ -16,9 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+public class Tableur extends JFrame {
 
-public class Tableur extends JFrame{
-	
 	JTable table;
 	DefaultTableModel tableur;
 	private JMenuBar menuBar = new JMenuBar();
@@ -26,13 +25,12 @@ public class Tableur extends JFrame{
 	private JMenu JOuvrir = new JMenu("Ouvrir sous");
 	private JMenuItem IOuvrir = new JMenuItem("Ouvrir");
 	private JMenuItem IQuitter = new JMenuItem("Quitter");
-	
+
 	private JMenu JPropos = new JMenu("A propos");
 	private JMenuItem IPropos = new JMenuItem("?");
 
-	public Tableur() { 
-		tableur = new  DefaultTableModel();
-
+	public Tableur() {
+		tableur = new DefaultTableModel();
 
 		tableur.addColumn("DOSSIER");
 		tableur.addColumn("FICHIER");
@@ -45,50 +43,45 @@ public class Tableur extends JFrame{
 		table.setPreferredScrollableViewportSize(new Dimension(840, 500));
 		add(new JScrollPane(table), BorderLayout.CENTER);
 
-		
-
-
-
-
 		javax.swing.table.TableColumnModel lModel = table.getColumnModel();
-		table.setRowHeight( 20 );
+		table.setRowHeight(20);
 
 		lModel.getColumn(0).setMaxWidth(70);
 		lModel.getColumn(1).setMaxWidth(350);
 		lModel.getColumn(2).setMaxWidth(350);
 		lModel.getColumn(3).setMaxWidth(70);
 
-
-
-
 		JFichier.add(IOuvrir);
 		menuBar.add(JFichier);
 		JPropos.add(IPropos);
 		menuBar.add(JPropos);
 		setJMenuBar(menuBar);
-		
-		
+
 		this.JFichier.add(IQuitter);
 
-		
-		
-		IOuvrir.addActionListener(new ActionListener(){
-			
-			//permet l'ouverture du projet
+		IOuvrir.addActionListener(new ActionListener() {
+
+			// permet l'ouverture du projet
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser dialogue = new JFileChooser(new File("."));
 				String chemin = null;
 				File fichier;
 				String[] recupChemin = null;
 
-				if (dialogue.showOpenDialog(null)== JFileChooser.APPROVE_OPTION) {
+				if (dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					fichier = dialogue.getSelectedFile();
 					chemin = fichier.getPath();
-					recupChemin = chemin.split("clique ici");//permet de recuperer le repertoire ça presence est OBLIGATOIRE
+					recupChemin = chemin.split("clique ici");// permet de
+																// recuperer le
+																// repertoire ça
+																// presence est
+																// OBLIGATOIRE
 
 				}
 				setVisible(false);
-				recupChemin[0]=recupChemin[0]+"/.git/objects";//acces au dossier Objects
+				recupChemin[0] = recupChemin[0] + "/.git/objects";// acces au
+																	// dossier
+																	// Objects
 
 				Rechercher finder = new Rechercher();
 				try {
@@ -98,35 +91,30 @@ public class Tableur extends JFrame{
 					e.printStackTrace();
 				}
 
-			}        
+			}
 		});
-		
-		
-		IPropos.addActionListener(new ActionListener(){
+
+		IPropos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new APropos();
 
-			}        
+			}
 		});
-		
-		
-		IQuitter.addActionListener(new ActionListener(){
+
+		IQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 
-			}        
+			}
 		});
 
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(300, 120);
 
-		pack(); 
-		setVisible(true); 
+		pack();
+		setVisible(true);
 		////////////////////////////////////////////////////////////////////
 
 	}
 
-
-	
 }

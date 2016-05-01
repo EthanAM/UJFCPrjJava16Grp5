@@ -12,31 +12,36 @@ import java.util.zip.InflaterInputStream;
 import javax.swing.JOptionPane;;
 
 public class Rechercher extends Tableur {
-	public Rechercher(){
+	public Rechercher() {
 		super();
 	}
-	public  void rechercheFichier(String directoryPath) throws IOException {
+
+	public void rechercheFichier(String directoryPath) throws IOException {
 		File directory = new File(directoryPath);
 		File[] fichier = directory.listFiles();
 
-		int aligneur=0;
+		int aligneur = 0;
 
-		for(int i=0 ; i<fichier.length-1; i++){//ICI LE -1 POUR NE PAS PRENDRE LE PACK
-			File[] interfichier = fichier[i].listFiles();//interfichier liste les sous fichiers de fichier
+		for (int i = 0; i < fichier.length - 1; i++) {// ICI LE -1 POUR NE PAS
+														// PRENDRE LE PACK
+			File[] interfichier = fichier[i].listFiles();// interfichier liste
+															// les sous fichiers
+															// de fichier
 			tableur.setValueAt(fichier[i].getName(), aligneur, 0);
 
+			for (int j = 0; j < interfichier.length; j++) {
 
-
-			for(int j=0 ; j<interfichier.length; j++){
-
-				//String cleff=fichier[i].getName()+interfichier[j].getName();
-				//Permet la concatenation du nom du dossier avec le(s) fichier(s) qu'il contient(s)
-				File file= new File(interfichier[j].getPath());
+				// String cleff=fichier[i].getName()+interfichier[j].getName();
+				// Permet la concatenation du nom du dossier avec le(s)
+				// fichier(s) qu'il contient(s)
+				File file = new File(interfichier[j].getPath());
 
 				tableur.setValueAt(interfichier[j].getName(), aligneur, 1);
-				tableur.setValueAt(file, aligneur, 2);//permet de stocker le chemin (utile pour la partie information)
+				tableur.setValueAt(file, aligneur, 2);// permet de stocker le
+														// chemin (utile pour la
+														// partie information)
 
-				//decompression et remplisage de la table (colone 2 et 3)
+				// decompression et remplisage de la table (colone 2 et 3)
 				/////////////////////////////////////////////////////////////////////
 				FileInputStream fichier1 = new FileInputStream(file);
 
@@ -46,47 +51,47 @@ public class Rechercher extends Tableur {
 				int caract;
 
 				try {
-					while((caract = decompresser.read()) != -1){
-						LectureFichier.add( (byte)caract );
+					while ((caract = decompresser.read()) != -1) {
+						LectureFichier.add((byte) caract);
 					}
-				}
-				catch(IOException e) {
-					throw new IOException("fichier "+file.getName()+" : "+e.getMessage());
+				} catch (IOException e) {
+					throw new IOException("fichier " + file.getName() + " : " + e.getMessage());
 				}
 
-				Byte[] coder=LectureFichier.toArray(new Byte[0]); 
+				Byte[] coder = LectureFichier.toArray(new Byte[0]);
 				StringBuilder content = new StringBuilder();
 
 				int i1 = 0;
 				char c;
-				while(i1 < coder.length) {
+				while (i1 < coder.length) {
 
-					c = (char)coder[i1].byteValue();
+					c = (char) coder[i1].byteValue();
 					content.append(c);
 					i1++;
 				}
-				
-				String[] z=content.toString().split(" ");//permet de recuper le premier mot qui correspont au type
+
+				String[] z = content.toString().split(" ");// permet de recuper
+															// le premier mot
+															// qui correspont au
+															// type
 
 				/////////////////////////////////////////////////////////////////
 				tableur.setValueAt(z[0], aligneur, 3);
 
-				
 				aligneur++;
 			}
 
 		}
 
 		table.addMouseListener(new MouseAdapter() {
-			
-			//decompression egalement par rapport à la colonne 2 
-			
-			public void mouseClicked(MouseEvent event) { 
-				int ligne=event.getY()/20;
-				
-				File file=(File) tableur.getValueAt( ligne, 2);
-				
-				
+
+			// decompression egalement par rapport à la colonne 2
+
+			public void mouseClicked(MouseEvent event) {
+				int ligne = event.getY() / 20;
+
+				File file = (File) tableur.getValueAt(ligne, 2);
+
 				FileInputStream fichier1 = null;
 				try {
 					fichier1 = new FileInputStream(file);
@@ -101,38 +106,38 @@ public class Rechercher extends Tableur {
 				int caract;
 
 				try {
-					while((caract = decompresser.read()) != -1){
-						LectureFichier.add( (byte)caract );
+					while ((caract = decompresser.read()) != -1) {
+						LectureFichier.add((byte) caract);
 					}
-				}
-				catch(IOException e) {
+				} catch (IOException e) {
 					try {
-						throw new IOException("fichier "+file.getName()+" : "+e.getMessage());
+						throw new IOException("fichier " + file.getName() + " : " + e.getMessage());
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
 
-				Byte[] coder=LectureFichier.toArray(new Byte[0]); 
+				Byte[] coder = LectureFichier.toArray(new Byte[0]);
 				StringBuilder content = new StringBuilder();
 
 				int i1 = 0;
 				char c;
-				while(i1 < coder.length) {
+				while (i1 < coder.length) {
 
-					c = (char)coder[i1].byteValue();
+					c = (char) coder[i1].byteValue();
 					content.append(c);
 					i1++;
 				}
-				
-				////FENETRE POP UP/////
+
+				//// FENETRE POP UP/////
 
 				JOptionPane jop1;
 				jop1 = new JOptionPane();
 				jop1.showMessageDialog(null, content, "<<<Information>>>", JOptionPane.PLAIN_MESSAGE);
 
-			} });
+			}
+		});
 
 	}
 

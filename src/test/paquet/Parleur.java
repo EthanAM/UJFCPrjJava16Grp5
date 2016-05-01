@@ -1,6 +1,5 @@
 package paquet;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -35,31 +34,29 @@ class AfficheurFlux implements Runnable {
 
 public class Parleur extends Tableur {
 
-	public Parleur(){
+	public Parleur() {
 		super();
 	}
-	public  void findFiles(String directoryPath) {
+
+	public void findFiles(String directoryPath) {
 		File directory = new File(directoryPath);
 		File[] fichier = directory.listFiles();
 
-		int aligneur=0;
+		int aligneur = 0;
 
-		for(int i=0 ; i<fichier.length; i++){
+		for (int i = 0; i < fichier.length; i++) {
 			File[] interfichier = fichier[i].listFiles();
 			tableur.setValueAt(fichier[i].getName(), aligneur, 0);
 
-
-
-			for(int j=0 ; j<interfichier.length; j++){
+			for (int j = 0; j < interfichier.length; j++) {
 				String cleff;
 
-				cleff=fichier[i].getName()+interfichier[j].getName();
+				cleff = fichier[i].getName() + interfichier[j].getName();
 
 				tableur.setValueAt(interfichier[j].getName(), aligneur, 1);
 
-
 				try {
-					String[] commande = {"./interpreteur.sh", "827e"};
+					String[] commande = { "./interpreteur.sh", "827e" };
 					Process p = Runtime.getRuntime().exec(commande);
 					AfficheurFlux fluxSortie = new AfficheurFlux(p.getInputStream());
 					AfficheurFlux fluxErreur = new AfficheurFlux(p.getErrorStream());
@@ -74,13 +71,11 @@ public class Parleur extends Tableur {
 					e.printStackTrace();
 				}
 
-
 				tableur.setValueAt(cleff, aligneur, 2);
 				aligneur++;
 			}
 
 		}
 	}
-
 
 }
