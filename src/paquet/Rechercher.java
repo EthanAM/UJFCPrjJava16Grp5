@@ -22,11 +22,11 @@ public class Rechercher extends Tableur {
 
 		int aligneur = 0;
 
-		for (int i = 0; i < fichier.length - 1; i++) {// ICI LE -1 POUR NE PAS
-														// PRENDRE LE PACK
+		for (int i = 0; i < fichier.length ; i++) {// ICI jai enleve le LE -1 POUR NE PAS
+			// PRENDRE LE PACK
 			File[] interfichier = fichier[i].listFiles();// interfichier liste
-															// les sous fichiers
-															// de fichier
+			// les sous fichiers
+			// de fichier
 			tableur.setValueAt(fichier[i].getName(), aligneur, 0);
 
 			for (int j = 0; j < interfichier.length; j++) {
@@ -34,50 +34,58 @@ public class Rechercher extends Tableur {
 				// String cleff=fichier[i].getName()+interfichier[j].getName();
 				// Permet la concatenation du nom du dossier avec le(s)
 				// fichier(s) qu'il contient(s)
-				File file = new File(interfichier[j].getPath());
+				//jessai de faire une condition pour pouvoir prendre le pack et decompresser
+				if(fichier[i].getName()=="pack"){
+					System.out.println(fichier[i].getName());
+					System.out.println("MA BITE");
 
-				tableur.setValueAt(interfichier[j].getName(), aligneur, 1);
-				tableur.setValueAt(file, aligneur, 2);// permet de stocker le
-														// chemin (utile pour la
-														// partie information)
+				}
+				//System.out.println(fichier[i].getName());
+				else{
+					File file = new File(interfichier[j].getPath());
 
-				// decompression et remplisage de la table (colone 2 et 3)
-				/////////////////////////////////////////////////////////////////////
-				FileInputStream fichier1 = new FileInputStream(file);
+					tableur.setValueAt(interfichier[j].getName(), aligneur, 1);
+					tableur.setValueAt(file, aligneur, 2);// permet de stocker le
+					// chemin (utile pour la
+					// partie information)
 
-				InflaterInputStream decompresser = new InflaterInputStream(fichier1);
+					// decompression et remplisage de la table (colone 2 et 3)
+					/////////////////////////////////////////////////////////////////////
+					FileInputStream fichier1 = new FileInputStream(file);
 
-				ArrayList<Byte> LectureFichier = new ArrayList();
-				int caract;
+					InflaterInputStream decompresser = new InflaterInputStream(fichier1);
 
-				try {
-					while ((caract = decompresser.read()) != -1) {
-						LectureFichier.add((byte) caract);
+					ArrayList<Byte> LectureFichier = new ArrayList();
+					int caract;
+
+					try {
+						while ((caract = decompresser.read()) != -1) {
+							LectureFichier.add((byte) caract);
+						}
+					} catch (IOException e) {
+						throw new IOException("fichier " + file.getName() + " : " + e.getMessage());
 					}
-				} catch (IOException e) {
-					throw new IOException("fichier " + file.getName() + " : " + e.getMessage());
+
+					Byte[] coder = LectureFichier.toArray(new Byte[0]);
+					StringBuilder content = new StringBuilder();
+
+					int i1 = 0;
+					char c;
+					while (i1 < coder.length) {
+
+						c = (char) coder[i1].byteValue();
+						content.append(c);
+						i1++;
+					}
+
+					String[] z = content.toString().split(" ");// permet de recuper
+					// le premier mot
+					// qui correspont au
+					// type
+
+					/////////////////////////////////////////////////////////////////
+					tableur.setValueAt(z[0], aligneur, 3);
 				}
-
-				Byte[] coder = LectureFichier.toArray(new Byte[0]);
-				StringBuilder content = new StringBuilder();
-
-				int i1 = 0;
-				char c;
-				while (i1 < coder.length) {
-
-					c = (char) coder[i1].byteValue();
-					content.append(c);
-					i1++;
-				}
-
-				String[] z = content.toString().split(" ");// permet de recuper
-															// le premier mot
-															// qui correspont au
-															// type
-
-				/////////////////////////////////////////////////////////////////
-				tableur.setValueAt(z[0], aligneur, 3);
-
 				aligneur++;
 			}
 

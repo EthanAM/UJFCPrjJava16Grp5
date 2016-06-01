@@ -46,10 +46,10 @@ public class Tableur extends JFrame {
 		javax.swing.table.TableColumnModel lModel = table.getColumnModel();
 		table.setRowHeight(20);
 
-		lModel.getColumn(0).setMaxWidth(70);
-		lModel.getColumn(1).setMaxWidth(350);
-		lModel.getColumn(2).setMaxWidth(350);
-		lModel.getColumn(3).setMaxWidth(70);
+		//lModel.getColumn(0).setMaxWidth(70);
+		//lModel.getColumn(1).setMaxWidth(350);
+		//lModel.getColumn(2).setMaxWidth(350);
+		//lModel.getColumn(3).setMaxWidth(70);
 
 		JFichier.add(IOuvrir);
 		menuBar.add(JFichier);
