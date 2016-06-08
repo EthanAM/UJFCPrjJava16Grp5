@@ -86,7 +86,7 @@ public class FenPrem extends JFrame {
 		setSize(860, 560);
 		setLocation(300, 100);
 		setTitle("Projet Git");
-		setContentPane(new AfficheImage("FondFenetre.png"));
+		setContentPane(new AfficheImage("FondFenetre.png"));//changement des couleurs png
 		getContentPane().setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
