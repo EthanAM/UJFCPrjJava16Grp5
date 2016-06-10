@@ -37,8 +37,6 @@ public class Tableur extends JFrame {
 		tableur.addColumn("CLEF/CHEMIN");
 		tableur.addColumn("TYPE");
 
-		tableur.setRowCount(10000);
-
 		table = new JTable(tableur);
 		table.setPreferredScrollableViewportSize(new Dimension(840, 500));
 		add(new JScrollPane(table), BorderLayout.CENTER);
