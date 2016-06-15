@@ -1,8 +1,6 @@
 package paquet;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,26 +11,20 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class FenPrem extends JFrame {
 
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu JFichier = new JMenu("Fichier");
 
-	private JMenu JOuvrir = new JMenu("Ouvrir sous");
-	private JMenu JPropos = new JMenu("A propos");
 	private JMenuItem IOuvrir = new JMenuItem("Ouvrir");
 	private JMenuItem IQuitter = new JMenuItem("Quitter");
-	private JMenuItem IPropos = new JMenuItem("?");
 
 	public FenPrem() {
-		// TODO Auto-generated constructor stub
 
 		JFichier.add(IOuvrir);
 		menuBar.add(JFichier);
-		JPropos.add(IPropos);
-		menuBar.add(JPropos);
 		setJMenuBar(menuBar);
 
 		this.JFichier.add(IQuitter);
@@ -51,21 +43,19 @@ public class FenPrem extends JFrame {
 
 				if (dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					fichier = dialogue.getSelectedFile();
-
-				}
-				setVisible(false);
-
-				Rechercher finder = new Rechercher();
-				try {
-					File objDir = new File(new File(fichier, ".git"), "objects");
-					if (objDir.exists() && objDir.isDirectory()) {
-						finder.rechercheFichier(objDir.getAbsolutePath());
+					Rechercher finder;
+					try {
+						File objDir = new File(new File(fichier, ".git"), "objects");
+						if (objDir.exists() && objDir.isDirectory()) {
+							finder = new Rechercher();
+							finder.rechercheFichier(objDir.getAbsolutePath());
+							setContentPane(new JScrollPane(finder));//
+							pack();
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-
 			}
 		});
 
@@ -75,14 +65,6 @@ public class FenPrem extends JFrame {
 
 			}
 		});
-
-		IPropos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new APropos();
-
-			}
-		});
-
 		setSize(860, 560);
 		setLocation(300, 100);
 		setTitle("Projet Git");
@@ -90,21 +72,5 @@ public class FenPrem extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-	}
-}
-
-// FIXME: même si c'est "juste", on ne fait pas ça en java.
-// On préfère avoir 1 fichier par classe.
-// Le seul cas "autorisé" (et encore), c'est les classes privées.
-class AfficheImage extends JPanel {
-	Image fond;
-
-	AfficheImage(String s) {
-		fond = getToolkit().getImage(s);
-	}
-
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.drawImage(fond, 0, 0, getWidth(), getHeight(), this);
 	}
 }
