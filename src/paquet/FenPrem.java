@@ -40,16 +40,14 @@ public class FenPrem extends JFrame {
 				// c'était à votre portée.
 				dialogue.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				File fichier = null;
-
+				
+				//Ouvre un TableauPanel
 				if (dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					fichier = dialogue.getSelectedFile();
-					Rechercher finder;
 					try {
 						File objDir = new File(new File(fichier, ".git"), "objects");
 						if (objDir.exists() && objDir.isDirectory()) {
-							finder = new Rechercher();
-							finder.rechercheFichier(objDir.getAbsolutePath());
-							setContentPane(new JScrollPane(finder));//
+							setContentPane(new TableauPanel(objDir.getAbsolutePath()));//
 							pack();
 						}
 					} catch (IOException e) {

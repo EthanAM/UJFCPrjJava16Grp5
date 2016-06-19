@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-class AfficheurFlux implements Runnable {
+/*class AfficheurFlux implements Runnable {
 
 	private final InputStream inputStream;
 
@@ -78,4 +78,4 @@ public class Parleur extends Tableur {
 		}
 	}
 
-}
+}*/

@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import paquet.Tableur;
 
-public class RechercherParCommande extends Tableur {
+/*public class RechercherParCommande extends Tableur {
 
 	public RechercherParCommande() {
 		super();
@@ -82,7 +82,7 @@ public class RechercherParCommande extends Tableur {
 
 		}
 
-		/*table.addMouseListener(new MouseAdapter() {
+		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {
 				int ligne = event.getY() / 20;
 				String a = (String) tableur.getValueAt(ligne, 2);
@@ -90,7 +90,7 @@ public class RechercherParCommande extends Tableur {
 				new Info(a, b);
 
 			}
-		});*/
+		});
 	}
 
-}
+}*/

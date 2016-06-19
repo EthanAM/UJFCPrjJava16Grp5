@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-public class Info {
+/*public class Info {
 	public Info(String ligne, String type) {
 		String resultat = new String();
 
@@ -60,4 +60,4 @@ public class Info {
 		jop1.showMessageDialog(null, resultat, "Information>>>" + type, JOptionPane.PLAIN_MESSAGE);
 	}
 
-}
+}*/

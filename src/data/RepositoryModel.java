@@ -1,15 +1,13 @@
-package paquet;
+package data;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.zip.InflaterInputStream;
 
+import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.internal.storage.file.PackFile;
 import org.eclipse.jgit.internal.storage.file.PackIndex.MutableEntry;
-import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Repository;
@@ -61,32 +59,23 @@ public class RepositoryModel {
 
 	//Traite les objets n'étants pas dans des packs
 	private void traiterObjet(File fichier) {
-		String nom = fichier.getName();
+		String nom =fichier.getParentFile().getName() +  fichier.getName();
 		String chemin = fichier.getAbsolutePath();
 		String dossier = fichier.getParentFile().getName();
-		StringBuilder content = new StringBuilder();
-		//decompression du fichier :
+		ObjectLoader loader;
 		try {
-			FileInputStream in = new FileInputStream(fichier);
-			InflaterInputStream decompresser = new InflaterInputStream(in);
-			int caract;
-			while((caract = decompresser.read()) != -1){
-				content.append((char) caract);
-			}
-			decompresser.close();
-			in.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+			loader = repository.open(repository.resolve(nom));
+			objectTable.put(nom,  ObjetGit.create(nom, chemin, dossier, loader));
+		} catch (RevisionSyntaxException| TypeErrorException | IOException e) {
+			System.err.println("Erreur lors de l'ouverture de l'objet " + nom);
 		}
-		String donnees = content.toString();
-		String type = donnees.split(" ")[0];//permet de recuperer le premier mot qui correspond au type
-		objectTable.put(nom,  new ObjetGit(nom, chemin, type, dossier, donnees));
 	}
 
+	//Ajoute les objets presents dans des packs.
 	private void traiterPack(File fichier){
 		for (File f : fichier.listFiles()) {
 			if(f.getName().endsWith(".pack")){
-				//Pour chaque objet .pack on cree un PackFile qui servira a trouver les clefs de hash des objets git
+				//Pour chaque objet pack on cree un PackFile qui servira a trouver les clefs de hash des objets git
 				//presents dans le pack
 				PackFile pack = new PackFile(f, 0);
 				String dossier = f.getName().substring(0, f.getName().length()-5);
@@ -98,22 +87,9 @@ public class RepositoryModel {
 						ObjectLoader loader = repository.open(id);
 						String nom = mutableEntry.toObjectId().getName();
 						String chemin = f.getAbsolutePath();	
-						String type = "";
-						switch (loader.getType()) {
-						case Constants.OBJ_COMMIT:
-							type = "Commit";
-							break;
-						case Constants.OBJ_TREE:
-							type = "Tree";
-							break;
-						case Constants.OBJ_BLOB:
-							type = "Blob";
-							break;
-						}
-						String donnees = new String(loader.getCachedBytes());
-						objectTable.put(nom, new ObjetGit(nom, chemin, type, dossier, donnees));
+						objectTable.put(nom,  ObjetGit.create(nom, chemin, dossier,loader));
 					} catch (Exception e) {
-						System.out.println("Erreur lors de l'importation de l'objet : " + mutableEntry.toObjectId().getName());
+						System.err.println("Erreur lors de l'importation de l'objet : " + mutableEntry.toObjectId().getName());
 					}
 				}
 			}
