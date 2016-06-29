@@ -47,13 +47,14 @@ public class FenPrem extends BorderPane {
 		if (f == null) {
 			return;
 		}
-		if(f.getName().equals(".git")){
+		if (f.getName().equals(".git")) {
 			f = new File(f, "objects");
-		}else{
+		} else {
 			f = new File(new File(f, ".git"), "objects");
 		}
-		if(!f.exists()){
-			Alert alert = new Alert(AlertType.ERROR, "Impossible de trouver le dossier .git/objects. Assurez-vous de sélectionner le dossier .git ou bien le dossier contenant .git");
+		if (!f.exists()) {
+			Alert alert = new Alert(AlertType.ERROR,
+					"Impossible de trouver le dossier .git/objects. Assurez-vous de sélectionner le dossier .git ou bien le dossier contenant .git");
 			alert.showAndWait();
 			return;
 		}
