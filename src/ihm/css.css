@@ -1,0 +1,7 @@
+.table-view{
+	-fx-font-family : monospace;
+}
+
+.clickable-text{
+	-fx-font-weight : bold;
+}
